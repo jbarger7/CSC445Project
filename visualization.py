@@ -26,7 +26,7 @@ def plot_dp_table(dp_table, items, capacity, ax=None):
     # Create table
     table = ax.table(cellText=dp_table,
                      rowLabels=[''] + [item.name for item in items],
-                     colLabels=[str(i) for i in range(capacity + 1)],
+                     colLabels=['Weight'] + [str(i) for i in range(1, capacity + 1)],
                      cellLoc='center',
                      loc='center')
 
@@ -35,7 +35,47 @@ def plot_dp_table(dp_table, items, capacity, ax=None):
     table.scale(1, 1.5)
 
     ax.axis('off')
-    ax.set_title('DP Table (Rows: Items, Columns: Capacity)')
+    ax.set_title('DP Table - Tracking Maximum Value by Item & Weight')
+
+    return ax
+
+def plot_dp_table_step(dp_table, items, capacity, current_step, total_steps, ax=None):
+    """
+    Plot the DP table at a specific step of construction.
+    current_step: which item row was last processed (0-indexed, -1 for initial)
+    total_steps: total number of items
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 6))
+
+    if capacity > 50:
+        if current_step == -1:
+            step_text = "Initial state (before processing)"
+        else:
+            step_text = f"After processing: {items[current_step].name}"
+        ax.text(0.5, 0.5, f'DP Table too large to display\n(Capacity: {capacity})\n\n{step_text}\nFinal value so far: {dp_table[-1][-1]}',
+                ha='center', va='center', transform=ax.transAxes, fontsize=12)
+        ax.set_title(f'DP Table Step {current_step + 2}/{total_steps + 1}')
+        ax.axis('off')
+        return ax
+
+    # Create table
+    table = ax.table(cellText=dp_table,
+                     rowLabels=[''] + [item.name for item in items],
+                     colLabels=['Weight'] + [str(i) for i in range(1, capacity + 1)],
+                     cellLoc='center',
+                     loc='center')
+
+    table.auto_set_font_size(False)
+    table.set_fontsize(8)
+    table.scale(1, 1.5)
+
+    ax.axis('off')
+    if current_step == -1:
+        title_text = "DP Table - Initial State"
+    else:
+        title_text = f"DP Table - After Processing: {items[current_step].name}"
+    ax.set_title(f'{title_text} (Step {current_step + 2}/{total_steps + 1})')
 
     return ax
 

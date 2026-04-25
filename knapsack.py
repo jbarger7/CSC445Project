@@ -51,7 +51,7 @@ def greedy_fractional_knapsack(items, capacity):
 def dynamic_programming_knapsack(items, capacity):
     """
     Dynamic Programming for 0/1 Knapsack.
-    Returns DP table, selected items, and total value.
+    Returns DP table, selected items, total value, and intermediate steps.
     """
     # DP only supports integer weights/capacity
     weights = []
@@ -66,14 +66,17 @@ def dynamic_programming_knapsack(items, capacity):
 
     n = len(items)
     dp = [[0 for _ in range(capacity + 1)] for _ in range(n + 1)]
+    dp_steps = []
 
-    # Build DP table
+    # Build DP table and capture steps
     for i in range(1, n + 1):
         for w in range(capacity + 1):
             if weights[i-1] <= w:
                 dp[i][w] = max(dp[i-1][w], dp[i-1][w - weights[i-1]] + items[i-1].value)
             else:
                 dp[i][w] = dp[i-1][w]
+        # Store a copy of current state after processing each item
+        dp_steps.append([row[:] for row in dp])
 
     # Backtrack to find selected items
     selected = []
@@ -84,7 +87,7 @@ def dynamic_programming_knapsack(items, capacity):
             w -= weights[i-1]
 
     total_value = dp[n][capacity]
-    return dp, selected, total_value
+    return dp, selected, total_value, dp_steps
 
 class Node:
     def __init__(self, level, profit, weight, bound, selected):

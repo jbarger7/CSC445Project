@@ -20,9 +20,9 @@ This tool implements and visualizes three different approaches to solving the Kn
 
 ## GUI Layout
 
-- **📝 Input Tab**: Set capacity, manage items, run algorithms
-- **📊 Results Tab**: Detailed algorithm outputs and comparisons
-- **📈 Visualization Tab**: Charts and DP table display
+- **Input Tab**: Set capacity, manage items, run algorithms
+- **Results Tab**: Detailed algorithm outputs and comparisons
+- **Visualization Tab**: Charts and DP table display
 
 ## Installation & Usage
 
